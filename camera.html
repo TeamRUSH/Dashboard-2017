@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href = "bootstrap.min.css"/>
+	<link rel="stylesheet" href = "bootstrap-toggle.min.css"/>
+  <link rel="stylesheet" href = "tether.min.css"/>
+	<link rel="stylesheet" href = "dygraph.min.css"/>
+</head>
+<body>
+	<div class="container">
+
+		<!-- Static navbar -->
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="#">Team RUSH Dashboard</a>
+				</div>
+				<div id="navbar" class="navbar-collapse collapse">
+					<ul class="nav navbar-nav">
+						<li><a href="index.html">Home</a></li>
+	          <li><a href="TestCSV.html">CSV test</a></li>
+						<li class = "active"><a href="#">Match Camera</a></li>
+						<li><a href="ShooterTuning.html">Shooter Tuning</a></li>
+						<li><a href="field.html">Field</a></li>
+					</ul>
+				</div><!--/.nav-collapse -->
+			</div><!--/.container-fluid -->
+		</nav>
+
+
+		<div class="row">
+			 <div class="col-lg-10"></div>
+			 <div class="col-lg-2">
+				 		<div class="form-group col-lg-6">
+							<span id="connectstate" class="label label-danger">Web Socket</span>
+						</div>
+						<div class="form-group col-lg-6">
+								<span id="robotstate" class="label label-danger">Robot</span><span id="robotAddress">disconnected</span>
+						</div>
+		   </div>
+		</div>
+
+		<div class="row">
+			<div class="col-lg-12">
+				<table id="nt" class="table-striped table-condensed table-bordered">
+					<tbody></tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+<!-- This starts the NetworkTables websocket, it can be accessed from multiple
+     pages simultaneously -->
+<script src="/networktables/networktables.js"></script>
+
+<script src="jquery-2.2.4.min.js"></script>
+
+<!-- utility functions to attach to a camera -->
+<script src="/networktables/camera.js"></script>
+
+<div>
+  Robot: <span id="robotstate">Unknown state</span> @ <span id="robotAddress">disconnected</span>
+</div>
+
+Camera:
+
+<div id="camera_container", style="height: 500px; width: 500px;">
+    <!-- this element should be empty, an img tag will be added here -->
+</div>
+
+<script type="text/javascript">
+"use strict";
+
+function onRobotConnection(connected) {
+	$('#robotstate').text(connected ? "Connected!" : "Disconnected");
+	$('#robotAddress').text(connected ? NetworkTables.getRobotAddress() : "disconnected");
+}
+
+$(document).ready(function(){
+    // sets a function that will be called when the robot connects/disconnects
+	NetworkTables.addRobotConnectionListener(onRobotConnection, true);
+
+    // will load a camera from the robot's IP address on port 5800
+    loadCameraOnConnect({
+        container: '#camera_container', // where to put the img tag
+        proto: null,                    // optional, defaults to http://
+        host: null,                     // optional, if null will use robot's autodetected IP address
+        port: 5800,                     // webserver port
+        image_url: '/?action=stream',   // mjpg stream of camera
+        data_url: '/program.json',      // used to test if connection is up
+        wait_img: null,                 // optional img to show when not connected, can use SVG instead
+        error_img: null,                // optional img to show when error connecting, can use SVG instead
+        attrs: {                        // optional: attributes set on svg or img element
+            width: 640,                     // optional, stretches image to this width
+            height: 480,                    // optional, stretches image to this width
+        }
+
+    });
+});
+
+
+</script>
+
+</body>
+</html>

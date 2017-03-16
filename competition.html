@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" href="bootstrap.min.css" />
+    <link rel="stylesheet" href="bootstrap-toggle.min.css" />
+    <link rel="stylesheet" href="tether.min.css" />
+    <link rel="stylesheet" href="dygraph.min.css" />
+    <style>
+        .camera {
+            display: inline-block;
+            float: left;
+            width: 66%;
+        }
+
+        .camera img {
+            height: 480px;
+            width: 640px;
+        }
+
+        .indicators {
+            display: inline-block;
+            height: 480px;
+            width: 32%;
+        }
+
+        .indicator {
+            float: left;
+            height: 120px;
+            width: 100%;
+        }
+
+        .red {
+            background-color: red;
+        }
+
+        .yellow {
+            background-color: yellow;
+        }
+
+        .green {
+            background-color: green;
+        }
+    </style>
+
+    <!-- This starts the NetworkTables websocket, it can be accessed from multiple
+		 pages simultaneously -->
+    <script src="networktables.js"></script>
+    <script src="papaparse.js"></script>
+    <script src="papaparse.min.js"></script>
+    <script src="tether.min.js"></script>
+    <script src="jquery-2.2.4.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+    <script src="bootstrap-toggle.min.js"></script>
+    <script src="dygraph.min.js"></script>
+    <script src="jquery.knob.min.js"></script>
+    <script src="lockr.js"></script>
+    <script src="competition.js"></script>
+
+    <!-- uncomment this is you want to use included utility functions that
+		 implement common functionality that you might find useful. Requires
+		 that d3.js and jQuery are included first -->
+    <!-- <script src="/networktables/utils.js"></script> -->
+</head>
+
+<body>
+    <div class="container">
+
+        <!-- Static navbar -->
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">Team RUSH Dashboard</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="index.html">Home</a></li>
+                        <li class="active"><a href="#">COMP DASH</a></li>
+                        <li><a href="TestCSV.html">CSV test</a></li>
+                        <li><a href="Camera.html">Match Camera</a></li>
+                        <li><a href="ShooterTuning.html">Shooter Tuning</a></li>
+                        <li><a href="field.html">Field</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+
+        <div class="row">
+            <div id="chart" class="col-lg-10">
+            </div>
+            <div class="col-lg-2">
+                <div class="form-group col-lg-6">
+                    <span id="connectstate" class="label label-danger">Web Socket</span>
+                </div>
+                <div class="form-group col-lg-6">
+                    <span id="robotstate" class="label label-danger">Robot</span><span id="robotAddress">disconnected</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="subcontainer">
+            <div class="camera">
+                <img id="camera--image" src="http://raspberrypi.local:1185/stream.mjpg" onerror="if (this.src != '17app.png') this.src = '17app.png';" />
+            </div>
+            <div class="indicators">
+                <p>Arm</p>
+                <div id="arm" class="yellow indicator arm">
+                </div>
+                <p>Harvester</p>
+                <div id="harvester" class="yellow indicator harvester">
+                </div>
+                <p>Flipper</p>
+                <div id="flipper" class="yellow indicator flipper">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
