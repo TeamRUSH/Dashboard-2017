@@ -22,44 +22,46 @@ $(document).ready(function() {
     harvesterState = NetworkTables.getValue('/SmartDashboard/harvesterRunning', 'no');
     flipperState = NetworkTables.getValue('/SmartDashboard/flipperDeployed', 'no');
 
-    if (Object.is(armState,'no')) {
+    if (Object.is(armState, 'no')) {
         $(".arm").removeClass('red');
         $(".arm").removeClass('green');
         $(".arm").addClass('yellow');
     } else if (armState) {
-        $(".arm").removeClass('green');
-        $(".arm").removeClass('yellow');
-        $(".arm").addClass('red');
-    } else {
         $(".arm").removeClass('red');
         $(".arm").removeClass('yellow');
         $(".arm").addClass('green');
+    } else {
+        $(".arm").removeClass('green');
+        $(".arm").removeClass('yellow');
+        $(".arm").addClass('red');
     }
-    if (Object.is(harvesterState,'no')) {
+
+    if (Object.is(harvesterState, 'no')) {
         $(".harvester").removeClass('red');
         $(".harvester").removeClass('green');
         $(".harvester").addClass('yellow');
     } else if (harvesterState) {
-        $(".harvester").removeClass('green');
-        $(".harvester").removeClass('yellow');
-        $(".harvester").addClass('red');
-    } else {
         $(".harvester").removeClass('red');
         $(".harvester").removeClass('yellow');
         $(".harvester").addClass('green');
+    } else {
+        $(".harvester").removeClass('green');
+        $(".harvester").removeClass('yellow');
+        $(".harvester").addClass('red');
     }
-    if (Object.is(flipperState,'no')) {
+
+    if (Object.is(flipperState, 'no')) {
         $(".flipper").removeClass('red');
         $(".flipper").removeClass('green');
         $(".flipper").addClass('yellow');
     } else if (flipperState) {
-        $(".flipper").removeClass('green');
-        $(".flipper").removeClass('yellow');
-        $(".flipper").addClass('red');
-    } else {
         $(".flipper").removeClass('red');
         $(".flipper").removeClass('yellow');
         $(".flipper").addClass('green');
+    } else {
+        $(".flipper").removeClass('green');
+        $(".flipper").removeClass('yellow');
+        $(".flipper").addClass('red');
     }
 });
 
@@ -106,36 +108,36 @@ function onValueChanged(key, value, isNew) {
     if (key == '/SmartDashboard/armDeployed') {
         if (value) {
             $(".arm").removeClass('yellow');
-            $(".arm").removeClass('green');
-            $(".arm").addClass('red');
-        } else {
-            $(".arm").removeClass('yellow');
             $(".arm").removeClass('red');
             $(".arm").addClass('green');
+        } else {
+            $(".arm").removeClass('yellow');
+            $(".arm").removeClass('green');
+            $(".arm").addClass('red');
         }
     }
 
     if (key == '/SmartDashboard/harvesterRunning') {
         if (value) {
             $(".harvester").removeClass('yellow');
-            $(".harvester").removeClass('green');
-            $(".harvester").addClass('red');
-        } else {
-            $(".harvester").removeClass('yellow');
             $(".harvester").removeClass('red');
             $(".harvester").addClass('green');
+        } else {
+            $(".harvester").removeClass('yellow');
+            $(".harvester").removeClass('green');
+            $(".harvester").addClass('red');
         }
     }
 
     if (key == '/SmartDashboard/flipperDeployed') {
         if (value) {
             $(".flipper").removeClass('yellow');
-            $(".flipper").removeClass('green');
-            $(".flipper").addClass('red');
-        } else {
-            $(".flipper").removeClass('yellow');
             $(".flipper").removeClass('red');
             $(".flipper").addClass('green');
+        } else {
+            $(".flipper").removeClass('yellow');
+            $(".flipper").removeClass('green');
+            $(".flipper").addClass('red');
         }
     }
 }
