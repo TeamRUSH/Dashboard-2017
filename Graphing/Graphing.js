@@ -7,6 +7,14 @@ var shooter_left_actualRPM;
 var shooter_left_requestedRPM;
 var shooter_right_actualRPM;
 var shooter_right_requestedRPM;
+var item1 = false;
+var item2 = false;
+var item3 = false;
+var item4 = false;
+var item5 = false;
+var item6 = false;
+var item7 = false;
+
 
 var lineChart;
 var requestedVelocity;
@@ -16,7 +24,11 @@ var recording = false;
 var count1 = 1;
 var count2 = 1;
 
-var chartLabels = ['Time', 'Requested RPMs Left', 'Actual RPMs Left', 'Requested RPMs Right', 'Actual RPMs Right', 'P left', 'I left', 'D left', 'P right', 'I right', 'D right'];
+
+
+
+
+var chartLabels = ['Time', 'D right', 'Box1', 'Box2', 'Box3', 'Box4', 'Box5', 'Box6', 'Box7'];
 
 $(document).ready(function(){
 
@@ -39,7 +51,6 @@ $(document).ready(function(){
 	});
 
 	
-
 
 
 	$('#toggleRecording').change(function() {
@@ -69,11 +80,67 @@ $(document).ready(function(){
 				var dleft = parseInt($('#shooter_left_pGain').val());
 				var pright = parseInt($('#shooter_right_pGain').val());
 				var iright = parseInt($('#shooter_right_iGain').val());
-				var dright = parseInt($('#shooter_right_pGain').val());
+				var dright = 13
+				var plot1;
+				var plot2;
+				var plot3;
+				var plot4;
+				var plot5;
+				var plot6;
+				var plot7;
+
+				if (item1 == true) {
+					plot1 = parseInt($("#option1").val());
+					
+				} else {
+					plot1 = NaN;
+				}
+
+				if (item2 == true) {
+					plot2 = parseInt($("#option2").val());
+				} else {
+					plot2 = NaN;
+				}
+
+				if (item3 == true) {
+					
+					plot3 = parseInt($("#option3").val());
+				} else {
+					plot3 = NaN;
+				}
+
+				if (item4 == true) {
+					
+					plot4 = parseInt($("#option4").val());
+				} else {
+					plot4 = 0;
+				}
+
+				if (item5 == true) {
+					
+					plot5 = parseInt($("#option5").val());
+				} else {
+					plot5 = NaN;
+				}
+
+				if (item6 == true) {
+					
+					plot6 = parseInt($("#option6").val());
+				} else {
+					plot6 = NaN;
+				}
+
+				if (item7 == true) {
+					
+					plot7 = parseInt($("#option7").val());
+				} else {
+					plot7 = NaN;
+				}
+
 				
 
 				//if (i < 5) { alert(y1 + '   ' + y2 + (i/10.0));}
-				data.push([i/10.0, y1, y2, y3, y4, pleft, ileft, dleft, pright, iright, dright]);
+				data.push([i/10.0, dright, plot1, plot2, plot3, plot4, plot5, plot6, plot7]);
 
 				if (i > 120) {
 					data.shift();
@@ -84,13 +151,63 @@ $(document).ready(function(){
 				//file can point to an actual system file or an array
 				lineChart.updateOptions( { 'file': data } );
 				}, 100);
+
+				
+
 	   }
 	   else {
 			clearInterval(window.IntervalId);
 	   }
 	});
 
+
+
 	createchart();
+
+	$("#dropdown").change(function(){
+		var options = $("#dropdown").selectedOptions;
+		alert("The text has been changed.");
+
+	//	options.foreach((opt) => {
+	//		console.log(opt);
+	//	});
+	
+		if ($("#dropdown").value=="#option1") {
+			item1 = true;
+		} else {
+			item1 = false;
+		}
+		if ("#dropdown".value=="#option2") {
+			item2 = true;
+		} else {
+			item2 = false;
+		}
+		if ("#dropdown".value=="#option3") {
+			item3 = true;
+		} else {
+			item3 = false;
+		}
+		if ("#dropdown".value=="#option4") {
+			item4 = true;
+		} else {
+			item4 = false;
+		}
+		if ("#dropdown".value=="#option5") {
+			item5 = true;
+		} else {
+			item5 = false;
+		}
+		if ("#dropdown".value=="#option6") {
+			item6 = true;
+		} else {
+			item6 = false;
+		}
+		if ("#dropdown".value=="#option7") {
+			item7 = true;
+		} else {
+			item7 = false;
+		}
+	}); 
 	//NetworkTables.addKeyListener('velocity', onVelocityChanged, true);
 	});
 	function saveData(){
@@ -115,9 +232,7 @@ $(document).ready(function(){
 		link.click();
 	}
 
-function zoomGraph(MIN, MAX) {
-	lineChart.updateOptions
-}
+
 
 function sendParms() {
 	NetworkTables.putValue('/SmartDashboard/shooter_left_setPoint', $('#shooter_left_rpm').val());
@@ -135,6 +250,10 @@ function sendParms() {
 	NetworkTables.putValue('/SmartDashboard/option1', $('#option1').val());
 	NetworkTables.putValue('/SmartDashboard/option2', $('#option2').val());
 	NetworkTables.putValue('/SmartDashboard/option3', $('#option3').val());
+	NetworkTables.putValue('/SmartDashboard/option4', $('#option4').val());
+	NetworkTables.putValue('/SmartDashboard/option5', $('#option5').val());
+	NetworkTables.putValue('/SmartDashboard/option6', $('#option6').val());
+	NetworkTables.putValue('/SmartDashboard/option7', $('#option7').val());
 
 	Lockr.set('shooter_left_setPoint', $('#shooter_left_rpm').val());
 	Lockr.set('shooter_left_fGain', $('#shooter_left_fGain').val());
@@ -151,6 +270,10 @@ function sendParms() {
 	Lockr.set('option1', $('#option1').val());
 	Lockr.set('option2', $('#option2').val());
 	Lockr.set('option3', $('#option3').val());
+	Lockr.set('option4', $('#option4').val());
+	Lockr.set('option5', $('#option5').val());
+	Lockr.set('option6', $('#option6').val());
+	Lockr.set('option7', $('#option7').val());
 }
 
 function initFromLocalStorage() {
@@ -169,6 +292,10 @@ function initFromLocalStorage() {
 	$('#option1').val(Lockr.get('option1'));
 	$('#option2').val(Lockr.get('option2'));
 	$('#option3').val(Lockr.get('option3'));
+	$('#option4').val(Lockr.get('option4'));
+	$('#option5').val(Lockr.get('option5'));
+	$('#option6').val(Lockr.get('option6'));
+	$('#option7').val(Lockr.get('option7'));
 }
 
 function onRobotConnection(connected) {

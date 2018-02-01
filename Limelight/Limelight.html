@@ -9,15 +9,11 @@
     <link rel="stylesheet" href="../libs/tether.min.css" />
     <link rel="stylesheet" href="../libs/dygraph.min.css" />
     <style>
-        .camera {
-            display: inline-block;
-            float: left;
-            width: 66%;
-        }
+        
 
         .camera img {
-            height: 50%;
-            width: 50%;
+            height: 100%;
+            width: 100%;
         }
 
         .indicators {
@@ -76,11 +72,11 @@
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li><a href="../index.html">Home</a></li>
-                        <li class="active"><a href="#">COMP DASH</a></li>
-                        <li><a href="../shooter/shooter.html">Shooter Tuning</a></li>
-                        <li><a href="../graphing/graphing.html">Graphing Test</a></li>
+                        <li><a href="../competition/competition.html">COMP DASH</a></li>
+                          <li><a href="../shooter/shooter.html">Shooter Tuning</a></li>
+                          <li><a href="../graphing/graphing.html">Graphing Test</a></li>
                         <li><a href="../field/field.html">Field</a></li>
-                        <li><a href="../Limelight/Limelight.html">Lime Light</a></li>
+                        <li class = "active"><a href="#">LimeLight</a></li>
                     </ul>
                 </div>
             </div>
@@ -102,8 +98,8 @@
 
         <div class="subcontainer">
             <div class="camera">
-                <img id="camera--image" src="http://10.0.27.6:5802/stream.mjpg" onerror="if (this.src != '../assets/17app.png') this.src = 'https://scontent-ort2-1.xx.fbcdn.net/v/t1.0-9/16388101_10154411999143391_3941392503500655670_n.jpg?oh=d0e639690caf5c074f37cdc85a882f94&oe=5AFACA97';" />
-            </div>
+                <img id="camera--image" src="http://10.0.27.11:5800/stream.mjpg" onerror="if (this.src != '../assets/17app.png') this.src = 'https://scontent-ort2-1.xx.fbcdn.net/v/t1.0-9/16388101_10154411999143391_3941392503500655670_n.jpg?oh=d0e639690caf5c074f37cdc85a882f94&oe=5AFACA97';" />
+            <!--/div>
             <div class="indicators">
                 <p>Arm</p>
                 <div id="arm" class="yellow indicator arm">
@@ -113,7 +109,7 @@
                 </div>
                 <p>Flipper</p>
                 <div id="flipper" class="yellow indicator flipper">
-                </div>
+                </div> -->
             </div>
         </div>
     </div>
