@@ -17,6 +17,7 @@ var item7 = false;
 
 var pointArray = [];
 var seriesArray = [];
+var graphableDataArray = [];
 
 
 var lineChart;
@@ -45,6 +46,9 @@ $(document).ready(function(){
 	NetworkTables.addGlobalListener(onValueChanged, true);
 
 	initFromLocalStorage();
+
+	mockNetworkTableData();
+	loadGraphSelectOptions();
 
 	$('#btnSendParms').click(function(){
 		zoomGraph(parseInt($("#Minimum").val()), parseInt($("#Maximum").val()))
@@ -89,9 +93,10 @@ $(document).ready(function(){
 				pointArray.push(dright);
 
 				seriesArray.forEach(function(element){
-					var y = parseFloat($("#" + element).val());
+					var y = element.value;
 					console.log(y);
-					chartLabels.push(element);
+					chartLabels.push(element.name);
+					console.log(element);
 					pointArray.push(y);
 				});
 
@@ -102,6 +107,7 @@ $(document).ready(function(){
 				console.log(pointArray);
 
 				//if (i < 5) { alert(y1 + '   ' + y2 + (i/10.0));}
+				//data push location [x, y, y, y, y, y, y, y, y, y, y, y, y]
 				data.push(pointArray);
 
 				if (i > 120) {
@@ -127,9 +133,17 @@ $(document).ready(function(){
 	createchart();
 
 	$("#dropdown").change(function(){
-		var options = $("#dropdown").selectedOptions;
-		seriesArray = $('#dropdown').val();
-		console.log(seriesArray);
+		// var options = $("#dropdown").selectedOptions;
+		// console.log(options);
+		seriesArray = [];
+		var annoyingArray = $('#dropdown').val();
+		annoyingArray.forEach(function (element) {
+			console.log(NetworkTables.getValue("/graphableData/" + element));
+			seriesArray.push({
+				name: element,
+				value: NetworkTables.getValue("/graphableData/" + element),
+			})
+		})
 
 		
 	}); 
@@ -225,7 +239,27 @@ function onValueChanged(key, value, isNew) {
 		$('<td></td>').attr('id', NetworkTables.keyToId(key))
 					   .text(value)
 					   .appendTo(tr);
+		var pos = key.indexOf('/graphableData/');
+		  if (pos > -1) {  
+			//graphableDataArray.push({
+			//	name: key.substring(15),
+			//	value: value
+			graphableDataArray.push(key.substring(15));
+			//})
+				console.log({key: key, pos: pos});
+		}
 	} else {
+
+		var pos = key.indexOf('/graphableData/');
+		  if (pos > -1) {
+			  var keyName = key.substring(15);
+			  seriesArray.forEach(function(element){
+				if (element.name == keyName) {
+					element.value = value;
+				}
+			});
+
+		  }
 
 		// similarly, use keySelector to convert the key to a valid jQuery
 		// selector. This should work for class names also, not just for ids
@@ -247,6 +281,24 @@ function zoomGraph(MIN, MAX) {
 	lineChart.updateOptions({
 		valueRange: [MIN, MAX]
 	});
+}
+
+function mockNetworkTableData() {
+	NetworkTables.putValue('/graphableData/option1', 17);
+	NetworkTables.putValue('/graphableData/option2', 12);
+	NetworkTables.putValue('/graphableData/option3', 4);
+}
+
+
+
+function loadGraphSelectOptions() {
+	for (var i in graphableDataArray) {		
+		$("#dropdown").append($('<option>', {
+			value: graphableDataArray[i],
+			text: graphableDataArray[i],
+			style: "color:rgb[0,0,0]",
+		}))
+	}
 }
 
 
