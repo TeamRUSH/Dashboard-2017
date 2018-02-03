@@ -15,6 +15,9 @@ var item5 = false;
 var item6 = false;
 var item7 = false;
 
+var pointArray = [];
+var seriesArray = [];
+
 
 var lineChart;
 var requestedVelocity;
@@ -28,7 +31,7 @@ var count2 = 1;
 
 
 
-var chartLabels = ['Time', 'D right', 'Box1', 'Box2', 'Box3', 'Box4', 'Box5', 'Box6', 'Box7'];
+var chartLabels = [];
 
 $(document).ready(function(){
 
@@ -67,80 +70,39 @@ $(document).ready(function(){
 	   if ($(this).prop('checked')) {
 			i = 0;
 			data = [];
+			console.log("clear", data)
+
+
 			window.IntervalId = setInterval(function() {
 
+				pointArray = [];
 				i = i + 1;
 
-				var y1 = parseInt($("#shooter_left_rpm").val());
-				var y2 = shooter_left_actualRPM;
-				var y3 = parseInt($("#shooter_right_rpm").val());
-				var y4 = shooter_right_actualRPM;
-				var pleft = parseInt($('#shooter_left_pGain').val());
-				var ileft = parseInt($('#shooter_left_iGain').val());
-				var dleft = parseInt($('#shooter_left_pGain').val());
-				var pright = parseInt($('#shooter_right_pGain').val());
-				var iright = parseInt($('#shooter_right_iGain').val());
-				var dright = 13
-				var plot1;
-				var plot2;
-				var plot3;
-				var plot4;
-				var plot5;
-				var plot6;
-				var plot7;
+				chartLabels = [];
+				chartLabels.push('D right');
+				chartLabels.push('Time');
 
-				if (item1 == true) {
-					plot1 = parseInt($("#option1").val());
-					
-				} else {
-					plot1 = NaN;
-				}
+				var dright = 13;
 
-				if (item2 == true) {
-					plot2 = parseInt($("#option2").val());
-				} else {
-					plot2 = NaN;
-				}
+				pointArray.push(i/10.0);
 
-				if (item3 == true) {
-					
-					plot3 = parseInt($("#option3").val());
-				} else {
-					plot3 = NaN;
-				}
+				pointArray.push(dright);
 
-				if (item4 == true) {
-					
-					plot4 = parseInt($("#option4").val());
-				} else {
-					plot4 = 0;
-				}
+				seriesArray.forEach(function(element){
+					var y = parseFloat($("#" + element).val());
+					console.log(y);
+					chartLabels.push(element);
+					pointArray.push(y);
+				});
 
-				if (item5 == true) {
-					
-					plot5 = parseInt($("#option5").val());
-				} else {
-					plot5 = NaN;
-				}
-
-				if (item6 == true) {
-					
-					plot6 = parseInt($("#option6").val());
-				} else {
-					plot6 = NaN;
-				}
-
-				if (item7 == true) {
-					
-					plot7 = parseInt($("#option7").val());
-				} else {
-					plot7 = NaN;
-				}
-
-				
+				lineChart.updateOptions({
+					labels: chartLabels,
+					 file: data
+				})
+				console.log(pointArray);
 
 				//if (i < 5) { alert(y1 + '   ' + y2 + (i/10.0));}
-				data.push([i/10.0, dright, plot1, plot2, plot3, plot4, plot5, plot6, plot7]);
+				data.push(pointArray);
 
 				if (i > 120) {
 					data.shift();
@@ -166,47 +128,10 @@ $(document).ready(function(){
 
 	$("#dropdown").change(function(){
 		var options = $("#dropdown").selectedOptions;
-		alert("The text has been changed.");
+		seriesArray = $('#dropdown').val();
+		console.log(seriesArray);
 
-	//	options.foreach((opt) => {
-	//		console.log(opt);
-	//	});
-	
-		if ($("#dropdown").value=="#option1") {
-			item1 = true;
-		} else {
-			item1 = false;
-		}
-		if ("#dropdown".value=="#option2") {
-			item2 = true;
-		} else {
-			item2 = false;
-		}
-		if ("#dropdown".value=="#option3") {
-			item3 = true;
-		} else {
-			item3 = false;
-		}
-		if ("#dropdown".value=="#option4") {
-			item4 = true;
-		} else {
-			item4 = false;
-		}
-		if ("#dropdown".value=="#option5") {
-			item5 = true;
-		} else {
-			item5 = false;
-		}
-		if ("#dropdown".value=="#option6") {
-			item6 = true;
-		} else {
-			item6 = false;
-		}
-		if ("#dropdown".value=="#option7") {
-			item7 = true;
-		} else {
-			item7 = false;
-		}
+		
 	}); 
 	//NetworkTables.addKeyListener('velocity', onVelocityChanged, true);
 	});
@@ -235,16 +160,6 @@ $(document).ready(function(){
 
 
 function sendParms() {
-	NetworkTables.putValue('/SmartDashboard/shooter_left_setPoint', $('#shooter_left_rpm').val());
-	NetworkTables.putValue('/SmartDashboard/shooter_left_fGain', $('#shooter_left_fGain').val());
-	NetworkTables.putValue('/SmartDashboard/shooter_left_pGain', $('#shooter_left_pGain').val());
-	NetworkTables.putValue('/SmartDashboard/shooter_left_iGain', $('#shooter_left_iGain').val());
-	NetworkTables.putValue('/SmartDashboard/shooter_left_dGain', $('#shooter_left_dGain').val());
-	NetworkTables.putValue('/SmartDashboard/shooter_right_setPoint', $('#shooter_right_rpm').val());
-	NetworkTables.putValue('/SmartDashboard/shooter_right_fGain', $('#shooter_right_fGain').val());
-	NetworkTables.putValue('/SmartDashboard/shooter_right_pGain', $('#shooter_right_pGain').val());
-	NetworkTables.putValue('/SmartDashboard/shooter_right_iGain', $('#shooter_right_iGain').val());
-	NetworkTables.putValue('/SmartDashboard/shooter_right_dGain', $('#shooter_right_dGain').val());
 	NetworkTables.putValue('/SmartDashboard/Minimum', $('#Minimum').val());
 	NetworkTables.putValue('/SmartDashboard/Maximum', $('#Maximum').val());
 	NetworkTables.putValue('/SmartDashboard/option1', $('#option1').val());
@@ -255,16 +170,6 @@ function sendParms() {
 	NetworkTables.putValue('/SmartDashboard/option6', $('#option6').val());
 	NetworkTables.putValue('/SmartDashboard/option7', $('#option7').val());
 
-	Lockr.set('shooter_left_setPoint', $('#shooter_left_rpm').val());
-	Lockr.set('shooter_left_fGain', $('#shooter_left_fGain').val());
-	Lockr.set('shooter_left_pGain', $('#shooter_left_pGain').val());
-	Lockr.set('shooter_left_iGain', $('#shooter_left_iGain').val());
-	Lockr.set('shooter_left_dGain', $('#shooter_left_dGain').val());
-	Lockr.set('shooter_right_setPoint', $('#shooter_right_rpm').val());
-	Lockr.set('shooter_right_fGain', $('#shooter_right_fGain').val());
-	Lockr.set('shooter_right_pGain', $('#shooter_right_pGain').val());
-	Lockr.set('shooter_right_iGain', $('#shooter_right_iGain').val());
-	Lockr.set('shooter_right_dGain', $('#shooter_right_dGain').val());
 	Lockr.set('Minimum', $('#Minimum').val());
 	Lockr.set('Maximum', $('#Maximum').val());
 	Lockr.set('option1', $('#option1').val());
@@ -277,16 +182,6 @@ function sendParms() {
 }
 
 function initFromLocalStorage() {
-	$('#shooter_left_rpm').val(Lockr.get('shooter_left_setPoint'));
-	$('#shooter_left_fGain').val(Lockr.get('shooter_left_fGain'));
-	$('#shooter_left_pGain').val(Lockr.get('shooter_left_pGain'));
-	$('#shooter_left_iGain').val(Lockr.get('shooter_left_iGain'));
-	$('#shooter_left_dGain').val(Lockr.get('shooter_left_dGain'));
-	$('#shooter_right_rpm').val(Lockr.get('shooter_right_setPoint'));
-	$('#shooter_right_fGain').val(Lockr.get('shooter_right_fGain'));
-	$('#shooter_right_pGain').val(Lockr.get('shooter_right_pGain'));
-	$('#shooter_right_iGain').val(Lockr.get('shooter_right_iGain'));
-	$('#shooter_right_dGain').val(Lockr.get('shooter_right_dGain'));
 	$('#Minimum').val(Lockr.get('Minimum'));
 	$('#Maximum').val(Lockr.get('Maximum'));
 	$('#option1').val(Lockr.get('option1'));
