@@ -108,7 +108,7 @@ $(document).ready(function(){
 	}
 
 function sendParms() {
-	NetworkTables.putValue('/SmartDashboard/shooter_left_setPoint', $('#shooter_left_rpm').val());
+	NetworkTables.putValue('/SmartDashboard/shooter_left_setPoint', $('#shooter_left_rpm').val()); //NetworkTables.putValue(Key to variable to search for, Default key if not found)
 	NetworkTables.putValue('/SmartDashboard/shooter_left_fGain', $('#shooter_left_fGain').val());
 	NetworkTables.putValue('/SmartDashboard/shooter_left_pGain', $('#shooter_left_pGain').val());
 	NetworkTables.putValue('/SmartDashboard/shooter_left_iGain', $('#shooter_left_iGain').val());
@@ -120,6 +120,7 @@ function sendParms() {
 	NetworkTables.putValue('/SmartDashboard/shooter_right_dGain', $('#shooter_right_dGain').val());
 	NetworkTables.putValue('/SmartDashboard/feederPowerLeft', $('#feederLeft').val());
   NetworkTables.putValue('/SmartDashboard/feederPowerRight', $('#feederRight').val());
+  //NetworkTables.putValue()
 
 	Lockr.set('shooter_left_setPoint', $('#shooter_left_rpm').val());
 	Lockr.set('shooter_left_fGain', $('#shooter_left_fGain').val());

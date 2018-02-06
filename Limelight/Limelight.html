@@ -2,33 +2,23 @@
 <html lang="en">
 
 <head>
+    <!--Specifies character set to be writen in. Others include -->
     <meta charset="utf-8">
-    <link rel="stylesheet" href="../libs/bootstrap.min.css" /> 
+    <!--Bootstrap Import Statements (Allows for Buttons, Image Imports, Etc. ).-->
+    <link rel="stylesheet" href="../libs/bootstrap.min.css" />
     <link rel="stylesheet" href="../libs/bootstrap-toggle.min.css" />
     <link rel="stylesheet" href="../libs/tether.min.css" />
     <link rel="stylesheet" href="../libs/dygraph.min.css" />
     <style>
         .camera {
             display: inline-block;
-            float: left;
+            float: right;
             width: 66%;
         }
 
         .camera img {
             height: 65%;
             width: 65%;
-        }
-
-        .indicators {
-            display: inline-block;
-            height: 480px;
-            width: 32%;
-        }
-
-        .indicator {
-            float: left;
-            height: 120px;
-            width: 100%;
         }
 
         .red {
@@ -74,13 +64,12 @@
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="../index.html">Home</a></li>
-                        <li class="active"><a href="#">Competition Dashboard</a></li>
+                                <li><a href="../index.html">Home</a></li>
+                                <li><a href="../competition/competition.html">Competition Dashboard</a></li>
               					<li><a href="../shooter/shooter.html">Shooter Tuning</a></li>
                                 <li><a href="../field/field.html">Field</a></li>
-                                <li><a href="../Limelight/Limelight.html">Limelight</a></li>
+                                <li class = "active"><a href = "#">Limelight</a></li>  
                                 <li><a href="../TestClass/TestClass.html">Test Class</a></li>
-
                     </ul>
                 </div>
             </div>
@@ -102,18 +91,7 @@
 
         <div class="subcontainer">
             <div class="camera">
-                <img id="camera--image" src="http://10.0.27.6:5802/stream.mjpg" onerror="if (this.src != '../assets/Cat.jpeg') this.src = '../assets/Cat.jpeg';" />
-            </div>
-            <div class="indicators">
-                <p>Arm</p>
-                <div id="arm" class="yellow indicator arm">
-                </div>
-                <p>Harvester</p>
-                <div id="harvester" class="yellow indicator harvester">
-                </div>
-                <p>Flipper</p>
-                <div id="flipper" class="yellow indicator flipper">
-                </div>
+                <img id="camera--image" src="http://10.0.27.11:5800/stream.mjpg" onerror="if (this.src != '../assets/No_Cam_Detected.png') this.src = '../assets/No_Cam_Detected.png';" />
             </div>
         </div>
     </div>

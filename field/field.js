@@ -3,7 +3,6 @@ var c = document.getElementById("canvas");
 var ctx = c.getContext("2d");
 ctx.fillStyle = "white"
 var download = "";
-var count = 0;
 var xOffset = 0;
 var yOffset = 0;
 var pointArray = new Array();

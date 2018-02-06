@@ -40,10 +40,10 @@
 				<ul class="nav navbar-nav">
 					<li><a href="../index.html">Home</a></li>
 					<li><a href="../competition/competition.html">Competition Dashboard</a></li>
-					<li class = "active"><a href="#">Shooter Tuning</a></li>
+					<li><a href="../shooter/shooter.html">Shooter Tuning</a></li>
 					<li><a href="../field/field.html">Field</a></li>
 					<li><a href="../Limelight/Limelight.html">Limelight</a></li>
-					<li><a href="../TestClass/TestClass.html">Test Class</a></li>
+					<li class = "active"><a href="#">Test Class</a></li>
 				</ul>
 			</div><!--/.nav-collapse -->
 		</div><!--/.container-fluid -->
@@ -71,60 +71,12 @@
 
 	<div class="form-inline form-group">
 			<div class="form-group col-2">
-				<label for="shooter_left_rpm">Left RPM:</label>
-				<input type="text" class="form-control input-sm" id="shooter_left_rpm">
+				<label for="motor_left_RPM">Left Motor RPM:</label>
+				<input type="text" class="form-control input-sm" id="motor_left_RPM">
 			</div>
-			<div class="form-group col-1">
-				<label for="shooter_left_fGain">F:</label>
-				<input type="text" class="form-control input-group-es  input-sm" id="shooter_left_fGain">
-			</div>
-			<div class="form-group col-1">
-				<label for="shooter_left_pGain">P:</label>
-				<input type="text" class="form-control input-sm" id="shooter_left_pGain">
-			</div>
-			<div class="form-group col-1">
-				<label for="shooter_left_iGain">I:</label>
-				<input type="text" class="form-control input-sm" id="shooter_left_iGain">
-			</div>
-			<div class="form-group col-1">
-				<label for="shooter_left_dGain">D:</label>
-				<input type="text" class="form-control input-sm" id="shooter_left_dGain">
-			</div>
-	</div>
-	<div class="form-inline form-group">
 			<div class="form-group col-2">
-				<label for="shooter_right_rpm">Right RPM:</label>
-				<input type="text" class="form-control input-sm" id="shooter_right_rpm">
-			</div>
-			<div class="form-group">
-				<label for="shooter_right_fGain">F:</label>
-				<input type="text" class="form-control input-sm" id="shooter_right_fGain">
-			</div>
-			<div class="form-group">
-				<label for="shooter_right_pGain">P:</label>
-				<input type="text" class="form-control input-sm" id="shooter_right_pGain">
-			</div>
-			<div class="form-group">
-				<label for="shooter_right_iGain">I:</label>
-				<input type="text" class="form-control input-sm text-success" id="shooter_right_iGain">
-			</div>
-			<div class="form-group">
-				<label for="shooter_right_dGain">D:</label>
-				<input type="text" class="form-control input-sm" id="shooter_right_dGain">
-			</div>
-	</div>
-	<div class="form-inline">
-			<div class="form-group">
-				<label for="feederLeft">Feeder Power Left:</label>
-				<input type="text" class="form-control input-sm" id="feederLeft">
-			</div>
-			<div class="form-group">
-				<label for="feederRight">Feeder Power Right:</label>
-				<input type="text" class="form-control input-sm" id="feederRight">
-			</div>
-			<div class="form-group">
-				<label>&nbsp;</label>
-				<button id="btnSendParms" type="button" class="btn btn-primary btn-sm" >Commit Parameters</button>
+				<label for="motor_right_RPM">Right Motor RPM:</label>
+				<input type="text" class="form-control input-sm" id="motor_right_RPM">
 			</div>
 	</div>
 	<br></br>
@@ -136,6 +88,6 @@
 		</div>
 	</div>
 </div>
-<script src="shooter.js"></script>
+<script src="TestClass.js"></script>
 </body>
 </html>
