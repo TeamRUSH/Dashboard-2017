@@ -1,4 +1,3 @@
-
 var c = document.getElementById("canvas");
 var ctx = c.getContext("2d");
 ctx.fillStyle = "white"
@@ -6,6 +5,9 @@ var download = "";
 var count = 0;
 var xOffset = 0;
 var yOffset = 0;
+var origxpos = 0;
+var origypos = 0;
+var fPoint = false; 
 var pointArray = new Array();
 var screenWidth = 1006;
 var screenHeight = 440;
@@ -15,14 +17,25 @@ var canvasOffset=$("#canvas").offset();
     var offsetY=canvasOffset.top;
 var heightIn = (screenHeight-92);
 
-    function handleMouseDown(e) {
-    mouseX = parseInt(e.clientX - offsetX);
-    mouseY = parseInt(e.clientY - offsetY);
-    $("#downlog").html("Down: " + mouseX + " / " + mouseY);
+    function handleMouseDown(e, firstPoint) {
+    var mouseX = parseInt(e.clientX - offsetX);
+    var mouseY = parseInt(e.clientY - offsetY);    
+    var pointPlaced = firstPoint;
+    if (mouseX != 132 && pointPlaced == false) {
+      $("#downlog").html("First Point Must Be Placed at X = 132");
+    } else if (mouseX == 132 && pointPlaced == false) {
+      $("#downlog").html("Down: " + 132 + " / " + mouseY + "; first point");
+      drawLineTo(132, mouseY);
+      fPoint = true;
+    } else {
+      $("#downlog").html("Down: " + mouseX + " / " + mouseY);
+      drawLineTo(mouseX, mouseY);
+    }
+
+
 
     // Put your mousedown stuff here
 
-    drawLineTo(mouseX, mouseY);
 }
 /*(154,46) = top left of field
 (846,392) = bottom right
@@ -30,6 +43,14 @@ var heightIn = (screenHeight-92);
 
 
 */
+
+function currentMousePos(e) {
+  var x = e.clientX - offsetX;
+  var y = e.clientY - offsetY;
+  var coor = "Current Position: " + x + " / " + y;
+  document.getElementById("currentPos").innerHTML = coor;
+    }
+
 var events = {
   clicked: false,
 };
@@ -48,35 +69,39 @@ function drawField(){
 ctx.beginPath();
 //ctx.moveTo(0,0);
 
+function drawCurrentMouse(currentX, currentY){
+  ctx.fillText(("(" + currentX + " in," + currentY + " in)")  , (currentX), (currentY));
+}
+
 function drawLineTo(xpos, ypos){
-  count+=1;
-  if(count===1){
-    xOffset=xpos;
-    yOffset=ypos;
-    xOffset/=12.8518519;
-    yOffset/=12.8518519;
-    xOffset*=12;
-    yOffset*=12;
-  }
+
+ // xpos/=1.085;
+ // ypos/=1.085;
+
+
+  
   ctx.lineTo((xpos),(ypos));
   ctx.stroke();
   ctx.moveTo((xpos), (ypos));
 
-  xpos-=154;
-  ypos-=46;
-  //rounded number = 12.852
-  xpos/=12.8518519;
-  ypos/=12.8518519;
-  xpos*=12;
-  ypos*=12;
+
+    if (count === 0){
+      ctx.fillText(("(0 in, 0 in)"), (xpos), (ypos));
+      origxpos=xpos;
+      origypos=ypos;
+      count+=1;
+    }
+  
+    else {
+      ctx.fillText(("(" + Math.round((xpos-origxpos)/1.085) + " in, " +
+      Math.round((ypos-origypos)/1.085) + " in)"), (xpos), (ypos));
+    }
+
+  
 
   pointArray.push([(Math.round((xpos-xOffset+143.79)*100)/100),
     (-1*Math.round((ypos-heightIn-yOffset+390.95)*100)/100)]);
 
-
-  ctx.fillText(("(" + (Math.round((xpos-xOffset+143.79)*100)/100) + " in, " +
-    ((-1*Math.round((ypos-heightIn-yOffset+390.95)*100)/100)) + " in)"),
-    (((xpos)*12.8518519/12+154)), ((ypos*12.8518519/12+46)));
 }
 
 function logPoints(){
@@ -121,8 +146,13 @@ function onNetworkTablesConnection(connected) {
 run();
 
 $("#canvas").mousedown(function (e) {
-    handleMouseDown(e);
+    handleMouseDown(e, fPoint);
 });
+
+$("#canvas").mousemove(function (e) {
+    currentMousePos(e);
+});
+
 $("#nameFile").mousedown(function(){
   download = "test";
 });

@@ -83,8 +83,9 @@ $(document).ready(function(){
 				i = i + 1;
 
 				chartLabels = [];
-				chartLabels.push('D right');
 				chartLabels.push('Time');
+				chartLabels.push('D right');
+				
 
 				var dright = 13;
 
@@ -253,6 +254,7 @@ function onValueChanged(key, value, isNew) {
 		var pos = key.indexOf('/graphableData/');
 		  if (pos > -1) {
 			  var keyName = key.substring(15);
+			  // /SmartDashboard/ = 16 for substring, /SmartDashboard/GraphableData/ = 30 for substring
 			  seriesArray.forEach(function(element){
 				if (element.name == keyName) {
 					element.value = value;
@@ -287,6 +289,7 @@ function mockNetworkTableData() {
 	NetworkTables.putValue('/graphableData/option1', 17);
 	NetworkTables.putValue('/graphableData/option2', 12);
 	NetworkTables.putValue('/graphableData/option3', 4);
+//	NetworkTables.putValue('/graphableData/optionEncoder', optionEncoder);
 }
 
 
