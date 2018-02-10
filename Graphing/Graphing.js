@@ -18,6 +18,8 @@ var item7 = false;
 var pointArray = [];
 var seriesArray = [];
 var graphableDataArray = [];
+var Rainbow = [];
+
 
 
 var lineChart;
@@ -74,10 +76,12 @@ $(document).ready(function(){
 	   if ($(this).prop('checked')) {
 			i = 0;
 			data = [];
-			console.log("clear", data)
+//			console.log("clear", data)
 
 
 			window.IntervalId = setInterval(function() {
+
+				mockNetworkTableData();
 
 				pointArray = [];
 				i = i + 1;
@@ -95,9 +99,9 @@ $(document).ready(function(){
 
 				seriesArray.forEach(function(element){
 					var y = element.value;
-					console.log(y);
+//					console.log(y);
 					chartLabels.push(element.name);
-					console.log(element);
+//					console.log(element);
 					pointArray.push(y);
 				});
 
@@ -105,7 +109,7 @@ $(document).ready(function(){
 					labels: chartLabels,
 					 file: data
 				})
-				console.log(pointArray);
+//				console.log(pointArray);
 
 				//if (i < 5) { alert(y1 + '   ' + y2 + (i/10.0));}
 				//data push location [x, y, y, y, y, y, y, y, y, y, y, y, y]
@@ -116,9 +120,19 @@ $(document).ready(function(){
 				}
 				if(recording && i % 120 === 0 && i > 0){
 	  			saveData();
-	  		}
+			    }
+			  Rainbow = [];
+			  for (var t = 0; t < 7; t++) {
+				  var randomR = Math.floor(Math.random() * 255);
+				  var randomG = Math.floor(Math.random() * 255);
+				  var randomB = Math.floor(Math.random() * 255);
+				  var myRainbow = "rgb("+randomR.toString() + "," +randomG.toString() + "," +randomB.toString() + ")"; 
+				  Rainbow.push(myRainbow); 
+			  }  
+ 
+
 				//file can point to an actual system file or an array
-				lineChart.updateOptions( { 'file': data } );
+				lineChart.updateOptions( { 'file': data, 'colors': Rainbow} );
 				}, 100);
 
 				
@@ -128,6 +142,7 @@ $(document).ready(function(){
 			clearInterval(window.IntervalId);
 	   }
 	});
+
 
 
 
@@ -286,9 +301,19 @@ function zoomGraph(MIN, MAX) {
 }
 
 function mockNetworkTableData() {
-	NetworkTables.putValue('/graphableData/option1', 17);
-	NetworkTables.putValue('/graphableData/option2', 12);
-	NetworkTables.putValue('/graphableData/option3', 4);
+	var randomY1 = Math.random() * 17;
+	var randomY2 = Math.random() * 12;
+	var randomY3 = Math.random() * 4;
+	var randomY4 = Math.random() * 8;
+	var randomY5 = Math.random() * 17;
+	var randomY6 = Math.random() * 9;
+
+	NetworkTables.putValue('/graphableData/option1', randomY1);
+	NetworkTables.putValue('/graphableData/option2', randomY2);
+	NetworkTables.putValue('/graphableData/option3', randomY3);
+	NetworkTables.putValue('/graphableData/option4', randomY4);
+	NetworkTables.putValue('/graphableData/option5', randomY5);
+	NetworkTables.putValue('/graphableData/option6', randomY6);
 //	NetworkTables.putValue('/graphableData/optionEncoder', optionEncoder);
 }
 
