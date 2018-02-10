@@ -303,7 +303,7 @@ function zoomGraph(MIN, MAX) {
 function mockNetworkTableData() {
 	var randomY1 = Math.random() * 17;
 	var randomY2 = Math.random() * 12;
-	var randomY3 = Math.random() * 5;
+	var randomY3 = Math.random() * 6;
 	var randomY4 = Math.random() * 8;
 	var randomY5 = Math.random() * 17;
 	var randomY6 = Math.random() * 9;
