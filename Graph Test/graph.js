@@ -7,8 +7,17 @@ var shooter_left_actualRPM;
 var shooter_left_requestedRPM;
 var shooter_right_actualRPM;
 var shooter_right_requestedRPM;
-var min_requested;
-var max_requested;
+var item1 = false;
+var item2 = false;
+var item3 = false;
+var item4 = false;
+var item5 = false;
+var item6 = false;
+var item7 = false;
+
+var pointArray = [];
+var seriesArray = [];
+var graphableDataArray = [];
 
 var lineChart;
 var requestedVelocity;
@@ -18,12 +27,13 @@ var recording = false;
 var count1 = 1;
 var count2 = 1;
 
-var chartLabels = ['Time', 'Requested RPMs Left', 'Actual RPMs Left', 'Requested RPMs Right', 'Actual RPMs Right', 'P left', 'I left', 'D left', 'P right', 'I right', 'D right'];
+var chartLabels = [];
 
 $(document).ready(function(){
 
 	$('#btnSendParms').click(function(){
-		zoomGraph(parseInt($("#minny").val()), parseInt($("#maxxy").val()))
+        zoomGraph(parseInt($("#minny").val()), parseInt($("#maxxy").val()))
+        
 		sendParms();
 	});
 
@@ -36,11 +46,11 @@ $(document).ready(function(){
 	// sets a function that will be called when any NetworkTables key/value changes
 	NetworkTables.addGlobalListener(onValueChanged, true);
 
-	initFromLocalStorage();
+	
+mockNetworkTableData();
+loadGraphSelectOptions();
 
-	$('#btnSendParms').click(function(){
-		sendParms();
-	});
+	initFromLocalStorage();
 
 	$('#toggleRecording').change(function() {
 		count1+=1;
@@ -54,46 +64,83 @@ $(document).ready(function(){
 
 	$('#toggleStreaming').change(function() {
 
-	   if ($(this).prop('checked')) {
-			i = 0;
-			data = [];
-			window.IntervalId = setInterval(function() {
+		if ($(this).prop('checked')) {
+			 i = 0;
+			 data = [];
+			 console.log("clear", data)
+ 
+ 
+			 window.IntervalId = setInterval(function() {
+ 
+				 pointArray = [];
+				 i = i + 1;
+ 
+				 chartLabels = [];
+				 chartLabels.push('D right');
+				 chartLabels.push('Time');
+ 
+				 var dright = 13;
+ 
+				 pointArray.push(i/10.0);
+ 
+				 pointArray.push(dright);
+ 
+				 seriesArray.forEach(function(element){
+					 var y = element.value;
+					 console.log(y);
+					 chartLabels.push(element.name);
+					 console.log(element);
+					 pointArray.push(y);
+				 });
+ 
+				 lineChart.updateOptions({
+					 labels: chartLabels,
+					  file: data
+				 })
+				 console.log(pointArray);
+ 
+				 //if (i < 5) { alert(y1 + '   ' + y2 + (i/10.0));}
+				 //data push location [x, y, y, y, y, y, y, y, y, y, y, y, y]
+				 data.push(pointArray);
+ 
+				 if (i > 120) {
+					 data.shift();
+				 }
+				 if(recording && i % 120 === 0 && i > 0){
+				   saveData();
+			   }
+				 //file can point to an actual system file or an array
+				 lineChart.updateOptions( { 'file': data } );
+				 }, 100);
+ 
+				 
+ 
+		}
+		else {
+			 clearInterval(window.IntervalId);
+		}
+	 });
+ 
+ 
+ 
+	 createchart(); 
 
-				i = i + 1;
-
-				var y1 = parseInt($("#shooter_left_rpm").val());
-				var y2 = shooter_left_actualRPM;
-				var y3 = parseInt($("#shooter_right_rpm").val());
-				var y4 = shooter_right_actualRPM;
-				var pleft = parseInt($('#shooter_left_pGain').val());
-				var ileft = parseInt($('#shooter_left_iGain').val());
-				var dleft = parseInt($('#shooter_left_pGain').val());
-				var pright = parseInt($('#shooter_right_pGain').val());
-				var iright = parseInt($('#shooter_right_iGain').val());
-				var dright = parseInt($('#shooter_right_pGain').val());
-				var min = parseInt($('#min_request').val());
-				var max = parseInt($('#max_request').val());
-
-				//if (i < 5) { alert(y1 + '   ' + y2 + (i/10.0));}
-				data.push([i/10.0, y1, y2, y3, y4, pleft, ileft, dleft, pright, iright, dright, minny, maxxy]);
-
-				if (i > 120) {
-					data.shift();
-				}
-				if(recording && i % 120 === 0 && i > 0){
-	  			saveData();
-	  		}
-				//file can point to an actual system file or an array
-				lineChart.updateOptions( { 'file': data } );
-				}, 100);
-	   }
-	   else {
-			clearInterval(window.IntervalId);
-	   }
+	 $("#dropdown").change(function(){
+        // var options = $("#dropdown").selectedOptions;
+        // console.log(options);
+        seriesArray = [];
+        var annoyingArray = $('#dropdown').val();
+        annoyingArray.forEach(function (element) {
+            console.log(NetworkTables.getValue("/graphableData/" + element));
+            seriesArray.push({
+                name: element,
+                value: NetworkTables.getValue("/graphableData/" + element),
+            })
+		})
+		
 	});
 
-	createchart();
-	//NetworkTables.addKeyListener('velocity', onVelocityChanged, true);
+	 //NetworkTables.addKeyListener('velocity', onVelocityChanged, true);
 	});
 	function saveData(){
 		var now = new Date();
@@ -124,7 +171,7 @@ function zoomGraph(MIN, MAX){
 }
 
 function sendParms() {
-	NetworkTables.putValue('/SmartDashboard/shooter_left_setPoint', $('#shooter_left_rpm').val());
+	//NetworkTables.putValue('/SmartDashboard/shooter_left_setPoint', $('#shooter_left_rpm').val());
 	NetworkTables.putValue('/SmartDashboard/shooter_left_fGain', $('#shooter_left_fGain').val());
 	NetworkTables.putValue('/SmartDashboard/shooter_left_pGain', $('#shooter_left_pGain').val());
 	NetworkTables.putValue('/SmartDashboard/shooter_left_iGain', $('#shooter_left_iGain').val());
@@ -135,7 +182,14 @@ function sendParms() {
 	NetworkTables.putValue('/SmartDashboard/shooter_right_iGain', $('#shooter_right_iGain').val());
 	NetworkTables.putValue('/SmartDashboard/shooter_right_dGain', $('#shooter_right_dGain').val());
 	NetworkTables.putValue('/SmartDashboard/min_request', $('#min_request').val());
-  	NetworkTables.putValue('/SmartDashboard/max_request', $('#max_request').val());
+    NetworkTables.putValue('/SmartDashboard/max_request', $('#max_request').val());
+    NetworkTables.putValue('/SmartDashboard/option1', $('#option1').val());
+    NetworkTables.putValue('/SmartDashboard/option2', $('#option2').val());
+    NetworkTables.putValue('/SmartDashboard/option3', $('#option3').val());
+    NetworkTables.putValue('/SmartDashboard/option4', $('#option4').val());
+    NetworkTables.putValue('/SmartDashboard/option5', $('#option5').val());
+    NetworkTables.putValue('/SmartDashboard/option6', $('#option6').val());
+    NetworkTables.putValue('/SmartDashboard/option7', $('#option7').val());
 
 	Lockr.set('shooter_left_setPoint', $('#shooter_left_rpm').val());
 	Lockr.set('shooter_left_fGain', $('#shooter_left_fGain').val());
@@ -146,9 +200,17 @@ function sendParms() {
 	Lockr.set('shooter_right_fGain', $('#shooter_right_fGain').val());
 	Lockr.set('shooter_right_pGain', $('#shooter_right_pGain').val());
 	Lockr.set('shooter_right_iGain', $('#shooter_right_iGain').val());
-	Lockr.set('shooter_right_dGain', $('#shooter_right_dGain').val());
+    Lockr.set('shooter_right_dGain', $('#shooter_right_dGain').val());
+    Lockr.set('option1', $('#option1').val());
+    Lockr.set('option2', $('#option2').val());
+    Lockr.set('option3', $('#option3').val());
+    Lockr.set('option4', $('#option4').val());
+    Lockr.set('option5', $('#option5').val());
+    Lockr.set('option6', $('#option6').val());
+    Lockr.set('option7', $('#option7').val());
 	Lockr.set('minny', $('#minny').val());
-	Lockr.set('maxxy', $('#maxxy').val());
+    Lockr.set('maxxy', $('#maxxy').val());
+    
 }
 
 function initFromLocalStorage() {
@@ -163,7 +225,15 @@ function initFromLocalStorage() {
 	$('#shooter_right_iGain').val(Lockr.get('shooter_right_iGain'));
 	$('#shooter_right_dGain').val(Lockr.get('shooter_right_dGain'));
 	$('#minny').val(Lockr.get('minny'));
-	$('#maxxy').val(Lockr.get('maxxy'));
+    $('#maxxy').val(Lockr.get('maxxy'));
+    $('#option1').val(Lockr.get('option1'));
+    $('#option2').val(Lockr.get('option2'));
+    $('#option3').val(Lockr.get('option3'));
+    $('#option4').val(Lockr.get('option4'));
+    $('#option5').val(Lockr.get('option5'));
+    $('#option6').val(Lockr.get('option6'));
+    $('#option7').val(Lockr.get('option7'));
+
 }
 
 function onRobotConnection(connected) {
@@ -193,13 +263,33 @@ function onValueChanged(key, value, isNew) {
 	// the NetworkTables.keyToId() function to convert them appropriately
 
 	if (isNew) {
-		var tr = $('<tr/>').appendTo($('#nt > tbody:last'));
-		$('<td/>').text(key).appendTo(tr);
-		$('<td></td>').attr('id', NetworkTables.keyToId(key))
-					   .text(value)
-					   .appendTo(tr);
-	} else {
+        var tr = $('<tr/>').appendTo($('#nt > tbody:last'));
+        $('<td/>').text(key).appendTo(tr);
+        $('<td></td>').attr('id', NetworkTables.keyToId(key))
+                       .text(value)
+                       .appendTo(tr);
+        var pos = key.indexOf('/graphableData/');
+          if (pos > -1) {  
+            //graphableDataArray.push({
+            //    name: key.substring(15),
+            //    value: value
+            graphableDataArray.push(key.substring(15));
+            //})
+                console.log({key: key, pos: pos});
+        }
+    } else {
 
+        var pos = key.indexOf('/graphableData/');
+          if (pos > -1) {
+              var keyName = key.substring(15);
+              // /SmartDashboard/ = 16 for substring, /SmartDashboard/GraphableData/ = 30 for substring
+              seriesArray.forEach(function(element){
+                if (element.name == keyName) {
+                    element.value = value;
+                }
+            });
+
+          }
 		// similarly, use keySelector to convert the key to a valid jQuery
 		// selector. This should work for class names also, not just for ids
 		$('#' + NetworkTables.keySelector(key)).text(value);
@@ -214,6 +304,23 @@ function onValueChanged(key, value, isNew) {
 		//alert(actualRPM);
 	}
 
+}
+
+function mockNetworkTableData() {
+    NetworkTables.putValue('/graphableData/option1', 17);
+    NetworkTables.putValue('/graphableData/option2', 12);
+    NetworkTables.putValue('/graphableData/option3', 4);
+//    NetworkTables.putValue('/graphableData/optionEncoder', optionEncoder);
+}
+
+function loadGraphSelectOptions() {
+    for (var i in graphableDataArray) {        
+        $("#dropdown").append($('<option>', {
+            value: graphableDataArray[i],
+            text: graphableDataArray[i],
+            style: "color:rgb[0,0,0]",
+        }))
+    }
 }
 
 function createchart() {

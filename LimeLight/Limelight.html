@@ -9,15 +9,10 @@
     <link rel="stylesheet" href="../libs/tether.min.css" />
     <link rel="stylesheet" href="../libs/dygraph.min.css" />
     <style>
-        .camera {
-            display: inline-block;
-            float: left;
-            width: 66%;
-        }
 
         .camera img {
-            height: 480px;
-            width: 640px;
+            height: 100%;
+            width: 100%;
         }
 
         .indicators {
@@ -56,7 +51,7 @@
     <script src="../libs/dygraph.min.js"></script>
     <script src="../libs/jquery.knob.min.js"></script>
     <script src="../libs/lockr.js"></script>
-    <script src="competition.js"></script>
+    <script src="Limelight.js"></script>
 
     <!-- uncomment this is you want to use included utility functions that
 		 implement common functionality that you might find useful. Requires
@@ -76,10 +71,10 @@
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li><a href="../index.html">Home</a></li>
-                        <li class="active"><a href="../competitioin/competition.html">COMP DASH</a></li>
+                        <li><a href="../competition/competition.html">COMP DASH</a></li>
               					<li><a href="../shooter/shooter.html">Shooter Tuning</a></li>
                                   <li><a href="../field/field.html">Field</a></li>
-                                    <li><a href="../LimeLight/Limelight.html">Lime Light</a></li>
+                                    <li class="active"><a href="../LimeLight/Limelight.html">Lime Light</a></li>
                                     <li><a href="../Graph Test/graph.html">Graph Test</a></li>
                     </ul>
                 </div>
@@ -102,10 +97,10 @@
 
         <div class="subcontainer">
             <div class="camera">
-                <img id="camera--image" src="http://10.0.27.6:5802/stream.mjpg" onerror="if (this.src != '../assets/17app.png') this.src = 'https://scontent-ort2-1.xx.fbcdn.net/v/t1.0-9/16388101_10154411999143391_3941392503500655670_n.jpg?oh=d0e639690caf5c074f37cdc85a882f94&oe=5AFACA97';" />
+                <img id="camera--image" src="http://10.0.27.11:5800/stream.mjpg" onerror="if (this.src != '../assets/17app.png') this.src = 'https://scontent-ort2-1.xx.fbcdn.net/v/t1.0-9/16388101_10154411999143391_3941392503500655670_n.jpg?oh=d0e639690caf5c074f37cdc85a882f94&oe=5AFACA97';" />
             </div>
             <div class="indicators">
-                <p>Arm</p>
+                <!--p>Arm</p>
                 <div id="arm" class="yellow indicator arm">
                 </div>
                 <p>Harvester</p>
@@ -114,7 +109,7 @@
                 <p>Flipper</p>
                 <div id="flipper" class="yellow indicator flipper">
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </body>
