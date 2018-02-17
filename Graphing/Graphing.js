@@ -21,6 +21,7 @@ var pointArray = [];
 var seriesArray = [];
 var graphableDataArray = [];
 var Rainbow = [];
+var map = {NameMappings:[]};
 
 
 
@@ -194,13 +195,13 @@ $(document).ready(function(){
 function sendParms() {
 	NetworkTables.putValue('/SmartDashboard/Minimum', $('#Minimum').val());
 	NetworkTables.putValue('/SmartDashboard/Maximum', $('#Maximum').val());
-	NetworkTables.putValue('/SmartDashboard/option1', $('#option1').val());
+	/* NetworkTables.putValue('/SmartDashboard/option1', $('#option1').val());
 	NetworkTables.putValue('/SmartDashboard/option2', $('#option2').val());
 	NetworkTables.putValue('/SmartDashboard/option3', $('#option3').val());
 	NetworkTables.putValue('/SmartDashboard/option4', $('#option4').val());
 	NetworkTables.putValue('/SmartDashboard/option5', $('#option5').val());
 	NetworkTables.putValue('/SmartDashboard/option6', $('#option6').val());
-	NetworkTables.putValue('/SmartDashboard/option7', $('#option7').val());
+	NetworkTables.putValue('/SmartDashboard/option7', $('#option7').val()); */
 
 	Lockr.set('Minimum', $('#Minimum').val());
 	Lockr.set('Maximum', $('#Maximum').val());
@@ -211,6 +212,7 @@ function sendParms() {
 	Lockr.set('option5', $('#option5').val());
 	Lockr.set('option6', $('#option6').val());
 	Lockr.set('option7', $('#option7').val());
+	Lockr.set('map', map);
 }
 
 function initFromLocalStorage() {
@@ -223,6 +225,7 @@ function initFromLocalStorage() {
 	$('#option5').val(Lockr.get('option5'));
 	$('#option6').val(Lockr.get('option6'));
 	$('#option7').val(Lockr.get('option7'));
+	map = Lockr.get('map');
 }
 
 function onRobotConnection(connected) {
@@ -271,7 +274,20 @@ function onValueChanged(key, value, isNew) {
 		var pos = key.indexOf('/'+SourceNetTable+'/');
 		  if (pos > -1) {
 			  var keyName = key.substring(15);
+			  var myMapping = {'gName': keyName, 'displayName': ''};
+			  map.NameMappings.push(myMapping);
 			  // /SmartDashboard/ = 16 for substring, /SmartDashboard/GraphableData/ = 30 for substring
+			  var entryFound = false;
+			  map.NameMappings.forEach(function(element) {
+				  if (keyName == element.gName) {
+					  entryFound = true;
+				  }
+			  })
+
+			  if (!entryFound) {
+				  map.NameMappings.push(myMapping);
+			  }
+
 			  seriesArray.forEach(function(element){
 				if (element.name == keyName) {
 					element.value = value;
@@ -321,10 +337,17 @@ function mockNetworkTableData() {
 
 
 function loadGraphSelectOptions() {
-	for (var i in graphableDataArray) {		
+	for (var i in graphableDataArray) {
+		var abcde = '';
+		map.NameMappings.forEach(function(element) {
+			console.log(element.gName);
+			if (element.gName == graphableDataArray[i]) {
+				abcde = (element.displayName == '') ? element.gName : element.displayName;
+			}
+		})
 		$("#dropdown").append($('<option>', {
-			value: graphableDataArray[i],
-			text: graphableDataArray[i],
+			value: (abcde == '') ? graphableDataArray[i] : abcde,
+			text: (abcde == '') ? graphableDataArray[i] : abcde,
 			style: "color:rgb[0,0,0]",
 		}))
 	}
