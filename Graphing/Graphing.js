@@ -316,7 +316,6 @@ function mockNetworkTableData() {
 	NetworkTables.putValue('/'+SourceNetTable+'/option4', randomY4);
 	NetworkTables.putValue('/'+SourceNetTable+'/option5', randomY5);
 	NetworkTables.putValue('/'+SourceNetTable+'/option6', randomY6);
-//	NetworkTables.putValue('/graphableData/optionEncoder', optionEncoder);
 }
 
 
