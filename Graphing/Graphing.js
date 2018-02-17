@@ -15,6 +15,8 @@ var item5 = false;
 var item6 = false;
 var item7 = false;
 
+var SourceNetTable = 'graphableData';
+
 var pointArray = [];
 var seriesArray = [];
 var graphableDataArray = [];
@@ -154,10 +156,10 @@ $(document).ready(function(){
 		seriesArray = [];
 		var annoyingArray = $('#dropdown').val();
 		annoyingArray.forEach(function (element) {
-			console.log(NetworkTables.getValue("/graphableData/" + element));
+			console.log(NetworkTables.getValue("/"+ SourceNetTable +"/" + element));
 			seriesArray.push({
 				name: element,
-				value: NetworkTables.getValue("/graphableData/" + element),
+				value: NetworkTables.getValue("/"+SourceNetTable+"/" + element),
 			})
 		})
 
@@ -255,7 +257,7 @@ function onValueChanged(key, value, isNew) {
 		$('<td></td>').attr('id', NetworkTables.keyToId(key))
 					   .text(value)
 					   .appendTo(tr);
-		var pos = key.indexOf('/graphableData/');
+		var pos = key.indexOf('/'+SourceNetTable+'/');
 		  if (pos > -1) {  
 			//graphableDataArray.push({
 			//	name: key.substring(15),
@@ -266,7 +268,7 @@ function onValueChanged(key, value, isNew) {
 		}
 	} else {
 
-		var pos = key.indexOf('/graphableData/');
+		var pos = key.indexOf('/'+SourceNetTable+'/');
 		  if (pos > -1) {
 			  var keyName = key.substring(15);
 			  // /SmartDashboard/ = 16 for substring, /SmartDashboard/GraphableData/ = 30 for substring
@@ -308,12 +310,12 @@ function mockNetworkTableData() {
 	var randomY5 = Math.random() * 17;
 	var randomY6 = Math.random() * 9;
 
-	NetworkTables.putValue('/graphableData/option1', randomY1);
-	NetworkTables.putValue('/graphableData/option2', randomY2);
-	NetworkTables.putValue('/graphableData/option3', randomY3);
-	NetworkTables.putValue('/graphableData/option4', randomY4);
-	NetworkTables.putValue('/graphableData/option5', randomY5);
-	NetworkTables.putValue('/graphableData/option6', randomY6);
+	NetworkTables.putValue('/'+SourceNetTable+'/option1', randomY1);
+	NetworkTables.putValue('/'+SourceNetTable+'/option2', randomY2);
+	NetworkTables.putValue('/'+SourceNetTable+'/option3', randomY3);
+	NetworkTables.putValue('/'+SourceNetTable+'/option4', randomY4);
+	NetworkTables.putValue('/'+SourceNetTable+'/option5', randomY5);
+	NetworkTables.putValue('/'+SourceNetTable+'/option6', randomY6);
 //	NetworkTables.putValue('/graphableData/optionEncoder', optionEncoder);
 }
 
